@@ -1,0 +1,999 @@
+(1)Emty row found
+(2)Auto filtering
+(3)Leading trailaring
+(4)Duplicate row 
+(5)Spacial character 
+
+
+
+**********************************
+Empty Row Test:
+
+*********************************
+
+   package com.cdphp.PIMS_MemberBenefitRules;
+
+import static org.junit.Assert.assertTrue;
+
+import java.io.File;
+
+import java.io.IOException;
+
+import java.util.ArrayList;
+
+import java.util.List;
+
+import org.apache.commons.lang3.StringUtils;
+
+import org.apache.log4j.Logger;
+
+import org.junit.Test;
+
+import com.cdphp.helpers.LoggerHelper;
+
+import jxl.Cell;
+
+import jxl.Sheet;
+
+import jxl.Workbook;
+
+import jxl.read.biff.BiffException;
+
+ 
+
+ 
+
+/**
+
+* Description : Data Validation JUnit Test Script to identify "Empty Rows"
+
+*
+###########################################
+(5)Spacial chracter found
+###########################################
+ 
+
+package com.cdphp.PIMS_MemberBenefitRules;
+
+import static org.junit.Assert.assertTrue;
+
+import jxl.Cell;
+
+import jxl.Sheet;
+
+import jxl.Workbook;
+
+ 
+
+import org.apache.log4j.Logger;
+
+import org.junit.Test;
+
+import com.cdphp.helpers.LoggerHelper;
+
+import jxl.read.biff.BiffException;
+
+import java.io.File;
+
+import java.io.IOException;
+
+import java.util.regex.Pattern;
+
+ 
+
+/**
+
+* Description : Data Validation JUnit Test Script to identify "Special Characters"
+
+*
+
+ * @author SriRamya Teegaala
+
+*/
+
+public class SpecialCharactersTest {
+
+      /**
+
+      * Script Name : <b>DuplicateRecordTest</b>
+
+       *Description : Data Validation JUnit Test Script to identify "Special Characters"
+
+      *
+
+       * @since 2020/08/04
+
+      * @author SriRamya Teegaala
+
+      * @throws IOException
+
+      * @throws WriteException
+
+      */
+
+ 
+
+      protected static Logger logger = LoggerHelper.getLogger(EmptyRowsTest.class.getSimpleName());
+
+      @Test
+
+      public void testSplChar() {
+
+            boolean specialCharactersPresent = true;
+
+            Workbook workbook = null;
+
+            logger.info("Accessing File PIMS_Test_PASS.Xls--(Benefits_Coverage) to test Special Characters...");
+
+            logger.info("Running Java Version: " + System.getProperty("java.version"));
+
+            //boolean check=true;
+
+            //get the path to the test file from an environment variable
+
+            String path = System.getenv("TEST_FILE");
+
+            //default to test file if environment variable is not set
+
+            if (path==null) {path="data/input/PIMS_Test_PASS.xls";}
+
+ 
+
+            //String EXCEL_FILE_LOCATION = "Data/Input/PIMS_DupRecords.xls";
+
+            try {
+
+                  //Accessing the xls file and path information
+
+                  //w = Workbook.getWorkbook(new File(EXCEL_FILE_LOCATION));
+
+                  File f = new File(path);
+
+                  System.out.println("");
+
+                  System.out.println("Opening file: " + f.getAbsolutePath() + f.exists());
+
+ 
+
+                  //Get first sheet from the workbook...
+
+                  workbook = Workbook.getWorkbook(f);
+
+                  Sheet sheet = workbook.getSheet(0);
+
+                  //    Sheet sheet = w.getSheet(0);
+
+                  int rows = sheet.getRows();
+
+                  int columns = sheet.getColumns();
+
+                  System.out.println();
+
+                  System.out.println("Total No.Of Rows: "+rows );
+
+                  System.out.println("Total No.of Columns: " +columns);
+
+ 
+
+                  // Check for Special Characters
+
+ 
+
+                  for (int i = 0; i < rows; i++) {
+
+                        //String s_content = "";
+
+                        Cell[] row = sheet.getRow(i);
+
+                        for (int j = 0; j < row.length; j++) {
+
+                              String cellval=row[j].getContents().trim();
+
+                              if(cellval.length()==0){
+
+                                    //return "";
+
+                              }
+
+                              else if(!Pattern.matches("^[^#*@\n\r]*$",cellval)){
+
+                                    specialCharactersPresent = true;
+
+                                    //String column = null;
+
+ 
+
+                                    //System.out.println("Special character in Row : " + row + " and Column : " + column + " :" + cellval);
+
+                                    System.out.println("Special character in Row: " + (i+1) + " and Column: " + (j+1) +":" + cellval);
+
+                                    specialCharactersPresent=false;
+
+                                    //break;
+
+                              }
+
+ 
+
+                        }
+
+                  }
+
+            } catch (IOException e) {
+
+                  e.printStackTrace();
+
+            } catch (BiffException e) {
+
+                  e.printStackTrace();
+
+            }
+
+            System.out.println("***Process Complete!***");
+
+ 
+
+            if(specialCharactersPresent) {
+
+                  //specialCharactersPresent = false;
+
+                  System.out.println("");
+
+                  System.out.println( "No Special Characters Found : PASS!!!");
+
+                  assertTrue(specialCharactersPresent);
+
+            } else {
+
+                  System.out.println("");
+
+                  System.out.println( "Special Characters Found : FAIL!!!");
+
+                  assertTrue(false);
+
+            }
+
+            workbook.close();
+
+      }
+
+}
+
+ 
+
+ 
+
+ 
+
+
+ * @author SriRamya Teegaala
+
+*/
+
+public class EmptyRowsTest {
+
+                /**
+
+                * Script Name : <b>Blank Rows Test</b>
+
+                 *Description : Data Validation JUnit Test Script to identify "Empty Rows"
+
+                *
+
+                 * @since 2020/08/04
+
+                * @author SriRamya Teegaala
+
+                * @throws IOException
+
+                * @throws WriteException
+
+                */
+
+ 
+
+                protected static Logger logger = LoggerHelper.getLogger(EmptyRowsTest.class.getSimpleName());
+
+                @Test
+
+                public void testEmptyrows() throws Exception {
+
+                                boolean emptyCharactersPresent = true;
+
+                                Workbook workbook = null;
+
+                                logger.info("Accessing File PIMS_Test_PASS.Xls--(Benefits_Coverage) to test Blank Rows...");
+
+                                logger.info("Running Java Version: " + System.getProperty("java.version"));
+
+ 
+
+                                //get the path to the test file from an environment variable
+
+                                String path = System.getenv("TEST_FILE");
+
+                                //default to test file if environment variable is not set
+
+                                if (path==null) {path="data/input/PIMS_Test_PASS.xls";}
+
+ 
+
+                                try {
+
+                                                //Accessing the xls file and path information
+
+ 
+
+                                                File f = new File(path);
+
+                                                System.out.println("");
+
+                                                System.out.println("Opening file: " + f.getAbsolutePath() + f.exists());
+
+ 
+
+                                                //Get first sheet from the workbook...
+
+                                                workbook = Workbook.getWorkbook(f);
+
+                                                Sheet sheet = workbook.getSheet(0);
+
+                                                int rows = sheet.getRows();
+
+                                                int columns = sheet.getColumns();
+
+                                                System.out.println();
+
+                                                System.out.println("Total No.Of Rows: "+rows );
+
+                                                System.out.println("Total No.of Columns: " +columns);
+
+ 
+
+                                                // Inner Loop for finding Empty Rows
+
+                                                List<String> l_rowscontents = new ArrayList<String>();
+
+                                                for (int i = 0; i < rows; i++) {
+
+                                                                String s_content = "";
+
+                                                                Cell[] row = sheet.getRow(i);
+
+                                                                for (int j = 0; j < row.length; j++) {
+
+                                                                                s_content = s_content.concat(getcellval(i, j, row[j], emptyCharactersPresent));
+
+                                                                }
+
+                                                                if(i>9&&i<858 &&StringUtils.isBlank(s_content)) {
+
+ 
+
+                                                                                System.out.println();
+
+                                                                                System.out.println("Empty Row found: " + (i+1));  //plus on since 0 based
+
+                                                                                emptyCharactersPresent = false;
+
+                                                                                //break;
+
+                                                                }
+
+ 
+
+                                                                l_rowscontents.add(s_content);
+
+                                                }
+
+                                }catch (IOException e) {
+
+                                                e.printStackTrace();
+
+                                } catch (BiffException e) {
+
+                                                e.printStackTrace();
+
+                                }
+
+ 
+
+                                System.out.println("***Process Complete***");
+
+                                // Check for Empty Rows
+
+                                if(emptyCharactersPresent) {
+
+                                                //emptyCharactersPresent=false;
+
+                                                System.out.println();
+
+                                                System.out.println( "No Empty Rows Exists : PASS!!!");
+
+                                                assertTrue(emptyCharactersPresent);
+
+                                } else {
+
+                                                System.out.println();
+
+                                                System.out.println( "Empty Rows Exists : FAIL!!!");
+
+                                                assertTrue(false);
+
+                                }
+
+                                workbook.close();
+
+                }
+
+ 
+
+                private String getcellval(int row, int column, Cell cell, boolean emptyCharactersPresent ) {
+
+                                String cellval = cell.getContents();
+
+                                if (cellval.length() == 0) {
+
+                                                return "";
+
+                                }
+
+                                return cellval.trim();
+
+                }
+
+}
+
+ 
+
+ 
+
+ 
+
+ 
+
+*****************************************************
+
+Auto filtering Code
+
+**********************************************************
+
+ 
+
+package com.cdphp.PIMS_MemberBenefitRules;
+
+import static org.junit.Assert.assertTrue;
+
+import jxl.Cell;
+
+import jxl.Sheet;
+
+import jxl.Workbook;
+
+ 
+
+import org.apache.log4j.Logger;
+
+import org.junit.Test;
+
+import com.cdphp.helpers.LoggerHelper;
+
+import jxl.read.biff.BiffException;
+
+import java.io.File;
+
+import java.io.IOException;
+
+import java.util.regex.Pattern;
+
+ 
+
+/**
+
+* Description : Data Validation JUnit Test Script to identify "Extended ASCII Characters"
+
+*
+
+ * @author SriRamya Teegaala
+
+*/
+
+public class ExtendedAsciiTest {
+
+                /**
+
+                * Script Name : <b>Extended ASCII Test</b>
+
+                 *Description : Data Validation JUnit Test Script to identify "Extended ASCII Characters"
+
+                *
+
+                 * @since 2020/08/04
+
+                * @author SriRamya Teegaala
+
+                * @throws IOException
+
+                * @throws WriteException
+
+                */
+
+ 
+
+                protected static Logger logger = LoggerHelper.getLogger(ExtendedAsciiTest.class.getSimpleName());
+
+                @Test
+
+                public void testAscii() {
+
+                                boolean AsciiPresent = true;
+
+                                Workbook workbook = null;
+
+                                logger.info("Accessing File PIMS_Test_PASS.Xls--(Benefits_Coverage) to test Special Characters...");
+
+                                logger.info("Running Java Version: " + System.getProperty("java.version"));
+
+                                //boolean check=true;
+
+                                //get the path to the test file from an environment variable
+
+                                String path = System.getenv("TEST_FILE");
+
+                                //default to test file if environment variable is not set
+
+                                if (path==null) {path="data/input/PIMS_Test_Sandbox.xls";}
+
+ 
+
+                                //String EXCEL_FILE_LOCATION = "Data/Input/PIMS_DupRecords.xls";
+
+                                try {
+
+                                                //Accessing the xls file and path information
+
+                                                //w = Workbook.getWorkbook(new File(EXCEL_FILE_LOCATION));
+
+                                                File f = new File(path);
+
+                                                System.out.println("");
+
+                                                System.out.println("Opening file: " + f.getAbsolutePath() + f.exists());
+
+ 
+
+                                                //Get first sheet from the workbook...
+
+                                                workbook = Workbook.getWorkbook(f);
+
+                                                Sheet sheet = workbook.getSheet(0);
+
+                                                //            Sheet sheet = w.getSheet(0);
+
+                                                int rows = sheet.getRows();
+
+                                                int columns = sheet.getColumns();
+
+                                                System.out.println();
+
+                                                System.out.println("Total No.Of Rows: "+rows );
+
+                                                System.out.println("Total No.of Columns: " +columns);
+
+ 
+
+                                                // Check for Special Characters
+
+ 
+
+                                                for (int i = 0; i < rows; i++) {
+
+                                                                //String s_content = "";
+
+                                                                Cell[] row = sheet.getRow(i);
+
+                                                                for (int j = 0; j < row.length; j++) {
+
+                                                                                String cellval=row[j].getContents();
+
+                                                                                if(cellval.length()==0){
+
+                                                                                                //return "";
+
+                                                                                }
+
+                                                                               
+
+                                                                                else if(!Pattern.matches("^[^\\x80-\\xFF]+$", cellval)){
+
+                                                                                                AsciiPresent = true;
+
+                                                                                               
+
+ 
+
+                                                                                                System.out.println("Extended Ascii Characters detected in Row: " + (i+1) + " and Column: " + (j+1) +":" + cellval);
+
+                                                                                                AsciiPresent=false;
+
+                                                                                                //break;
+
+                                                                                }
+
+                                                                }}
+
+                                               
+
+                                } catch (IOException e) {
+
+                                                e.printStackTrace();
+
+                                } catch (BiffException e) {
+
+                                                e.printStackTrace();
+
+                                }
+
+                                System.out.println("***Process Complete!***");
+
+ 
+
+                                if(AsciiPresent) {
+
+                                                //specialCharactersPresent = false;
+
+                                                System.out.println("");
+
+                                                System.out.println( "No Extended Ascii Characters Detected : PASS!!!");
+
+                                                assertTrue(AsciiPresent);
+
+                                } else {
+
+                                                System.out.println("");
+
+                                                System.out.println( "Extended Ascii Characters Detected  : FAIL!!!");
+
+                                                assertTrue(false);
+
+                                }
+
+                                workbook.close();
+
+                }
+
+}
+
+ 
+
+*************************************************************************************************
+
+Leading trailing space
+
+ 
+
+***************************************************************************************************
+
+ 
+
+package com.cdphp.PIMS_MemberBenefitRules;
+
+ 
+
+import static org.junit.Assert.assertTrue;
+
+import jxl.Cell;
+
+import jxl.Sheet;
+
+import jxl.Workbook;
+
+ 
+
+import org.apache.log4j.Logger;
+
+import org.junit.Test;
+
+import com.cdphp.helpers.LoggerHelper;
+
+import jxl.read.biff.BiffException;
+
+import java.io.File;
+
+import java.io.IOException;
+
+import java.util.regex.Pattern;
+
+ 
+
+/**
+
+* Description : Data Validation JUnit Test Script to identify "Leading/Trailing Spaces"
+
+*
+
+ * @author SriRamya Teegaala
+
+*/
+
+public class LeadingTrailingSpacesTest {
+
+                /**
+
+                * Script Name : <b>LEading/Trailing Spaces Test</b>
+
+                 *Description : Data Validation JUnit Test Script to identify "Leading/Trailing Spaces"
+
+                *
+
+                 * @since 2020/08/04
+
+                * @author SriRamya Teegaala
+
+                * @throws IOException
+
+                * @throws WriteException
+
+                */
+
+ 
+
+                protected static Logger logger = LoggerHelper.getLogger(LeadingTrailingSpacesTest.class.getSimpleName());
+
+                @Test
+
+                public void testSpaces() {
+
+                                boolean SpacesPresent = true;
+
+                                Workbook workbook = null;
+
+                                logger.info("Accessing File PIMS_Test_Spaces.Xls--(Benefits_Coverage) to test Special Characters...");
+
+                                logger.info("Running Java Version: " + System.getProperty("java.version"));
+
+                                //boolean check=true;
+
+                                //get the path to the test file from an environment variable
+
+                                String path = System.getenv("TEST_FILE");
+
+                                //default to test file if environment variable is not set
+
+                                if (path==null) {path="data/input/PIMS_Test_Spaces.xls";}
+
+ 
+
+                                //String EXCEL_FILE_LOCATION = "Data/Input/PIMS_DupRecords.xls";
+
+                                try {
+
+                                                //Accessing the xls file and path information
+
+                                                //w = Workbook.getWorkbook(new File(EXCEL_FILE_LOCATION));
+
+                                                File f = new File(path);
+
+                                                System.out.println("");
+
+                                                System.out.println("Opening file: " + f.getAbsolutePath() + f.exists());
+
+ 
+
+                                                //Get first sheet from the workbook...
+
+                                                workbook = Workbook.getWorkbook(f);
+
+                                                Sheet sheet = workbook.getSheet(0);
+
+                                                //            Sheet sheet = w.getSheet(0);
+
+                                                int rows = sheet.getRows();
+
+                                                int columns = sheet.getColumns();
+
+                                                System.out.println();
+
+                                                System.out.println("Total No.Of Rows: "+rows );
+
+                                                System.out.println("Total No.of Columns: " +columns);
+
+System.out.println("");
+
+                                                // Check for Special Characters
+
+ 
+
+                                                for (int i = 0; i < rows; i++) {
+
+                                                                //String s_content = "";
+
+                                                                Cell[] row = sheet.getRow(i);
+
+                                                                for (int j = 0; j < row.length; j++) {
+
+                                                                                String cellval=row[j].getContents();
+
+                                                                                if(cellval.length()==0){
+
+                                                                                                //return "";
+
+                                                                                }
+
+                                                                               
+
+                                                                                                                                                else if(!Pattern.matches("^[^\\s+]*$", cellval)){
+
+                                                                               
+
+                                                                                                SpacesPresent = true;
+
+                                                                                               
+
+                                                                                System.out.println("Leading/Trailing Spaces detected in Row: " + (i+1) + " and Column: " + (j+1) +":" + cellval);
+
+                                                                               
+
+                                                                                                SpacesPresent=false;
+
+                                                                                                //break;
+
+                                                                                }
+
+                                                                }}
+
+                                               
+
+                                } catch (IOException e) {
+
+                                                e.printStackTrace();
+
+                                } catch (BiffException e) {
+
+                                                e.printStackTrace();
+
+                                }
+
+                                System.out.println("");
+
+                                System.out.println("***Process Complete!***");
+
+ 
+
+                                if(SpacesPresent) {
+
+                                                //specialCharactersPresent = false;
+
+                                                System.out.println("");
+
+                                                System.out.println( "No Leading/Trailing Spaces Detected : PASS!!!");
+
+                                                assertTrue(SpacesPresent);
+
+                                } else {
+
+                                                System.out.println("");
+
+                                                System.out.println( "Leading/Trailing Spaces Detected  : FAIL!!!");
+
+                                                assertTrue(false);
+
+                                }
+
+                                workbook.close();
+
+                }
+
+}
+
+ 
+
+ 
+
+***************************************************************
+
+Duplicate row
+
+***************************************************************
+
+package com.cdphp.PIMS_MemberBenefitRules;
+
+ 
+
+import jxl.Cell;
+
+import jxl.Sheet;
+
+import jxl.Workbook;
+
+ 
+
+import org.apache.commons.lang3.StringUtils;
+
+import org.apache.log4j.Logger;
+
+import org.junit.Test;
+
+ 
+
+import com.cdphp.helpers.LoggerHelper;
+
+ 
+
+import static org.junit.Assert.assertTrue;
+
+ 
+
+import java.util.ArrayList;
+
+ 
+
+import jxl.read.biff.BiffException;
+
+ 
+
+import java.io.File;
+
+import java.io.IOException;
+
+ 
+
+/**
+
+* Description : Data Validation JUnit Test Script to identify "Duplicate Records"
+
+*
+
+ * @author SriRamya Teegaala
+
+*/
+
+public class DuplicateRecordTest {
+
+                /**
+
+                * Script Name : <b>DuplicateRecordTest</b>
+
+                 *Description : Data Validation JUnit Test Script to identify "Duplicate Records"
+
+                *
+
+                 * @since 2020/08/04
+
+                * @author SriRamya Teegaala
+
+                * @throws IOException
+
+                * @throws WriteException
+
+                */
+
+ 
+
+ 
+
+                protected static Logger logger = LoggerHelper.getLogger(DuplicateRecordTest.class.getSimpleName());
+
+               
+
+ 
+
+                @Test
+
+                public void testDuplicates() throws Exception {
+
+ 
+
+                                Workbook workbook = null;
+
+                                boolean check=true;
+
+                                logger.info("Accessing File PIMS_Test_PASS.Xls--(Benefits_Coverage) to test Duplicate Records...");
+
+                                logger.info("Running Java Version: " + System.getProperty("java.version"));
+
+ 
+
+                                //get the path to the test file from an environment variable
+
+                

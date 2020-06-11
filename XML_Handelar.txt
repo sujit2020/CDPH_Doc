@@ -1,0 +1,156 @@
+(1) Validate XML file 
+(2) Invalid xml error handelar 
+
+
+
+
+
+**************************
+Validated XML file
+########################
+*********************************************
+
+XML Validation
+
+############################################
+
+ 
+
+package com.cdphp.test;
+
+import java.io.File;
+
+import java.io.IOException;
+
+ 
+
+import javax.xml.XMLConstants;
+
+import javax.xml.parsers.DocumentBuilder;
+
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import javax.xml.parsers.ParserConfigurationException;
+
+import javax.xml.transform.Source;
+
+import javax.xml.transform.stream.StreamSource;
+
+import javax.xml.validation.Schema;
+
+import javax.xml.validation.SchemaFactory;
+
+ 
+
+import org.apache.axis2.jaxws.description.validator.Validator;
+
+import org.junit.Test;
+
+import org.w3c.dom.Document;
+
+import org.w3c.dom.Node;
+
+import org.w3c.dom.NodeList;
+
+import org.xml.sax.SAXException;
+
+ 
+
+public class ValidateConnectionXml{
+
+               
+
+ 
+
+                public ValidateConnectionXml ()
+
+                {
+
+                                super();
+
+                }
+
+                @Test
+
+                public void environmentxml() throws ParserConfigurationException, Exception, IOException {
+
+               
+
+                                                DocumentBuilderFactory factory =DocumentBuilderFactory.newInstance();
+
+                                                factory.setValidating(false);
+
+                                                factory.setNamespaceAware(true);
+
+                                                DocumentBuilder builder = factory.newDocumentBuilder();
+
+                                                builder.setErrorHandler(new InvalidXmlErrorHandler());
+
+                                                Document doc = builder.parse("Data/Input/connection.xml");
+
+                                                System.out.println("File is Valid XML");
+
+                }
+
+}
+
+                                               
+
+ 
+
+######################################
+
+Need to write supporting class for XML validation "Invalid xml handler"
+
+***************************************
+
+package com.cdphp.test;
+
+ 
+
+import org.xml.sax.ErrorHandler;
+
+import org.xml.sax.SAXException;
+
+import org.xml.sax.SAXParseException;
+
+ 
+
+public class InvalidXmlErrorHandler implements ErrorHandler{
+
+ 
+
+                @Override
+
+                public void warning(SAXParseException exception) throws SAXException {
+
+                                System.out.println(exception.getMessage());
+
+                               
+
+                }
+
+ 
+
+                @Override
+
+                public void error(SAXParseException exception) throws SAXException {
+
+                                System.out.println("Test Failed due to Invalid XML");
+
+                                System.out.println(exception.getMessage());
+
+                               
+
+                }
+
+ 
+
+                @Override
+
+                public void fatalError(SAXParseException exception) throws SAXException {
+
+                                System.out.println("Test Failed due to Invalid XML");
+
+
+...
